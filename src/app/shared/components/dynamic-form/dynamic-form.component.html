@@ -1,0 +1,28 @@
+<form [formGroup]="dynamicFormGroup" (ngSubmit)="onSubmitForm()">
+  <div [ngClass]="class">
+    <div class="row">
+      <div
+        *ngFor="let field of fields"
+        [ngClass]="field.col"
+        class="position-relative"
+      >
+        <div *ngIf="field.type !== 'input-group'">
+          <app-dynamic-field
+            [field]="field"
+            [formName]="dynamicFormGroup"
+            [isReviewing]="isReviewing"
+            [isInlineInput]="isInlineInput"
+          ></app-dynamic-field>
+          <app-dynamic-error
+            *ngIf="field.type !== 'input-group'"
+            [fieldName]="field['fieldName']"
+            [fieldLabel]="field['label']"
+          ></app-dynamic-error>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-end">
+  <button class="btn btn-primary mt-5 rounded-pill px-4" type="submit">{{buttonName}}</button>
+</div>
+</form>

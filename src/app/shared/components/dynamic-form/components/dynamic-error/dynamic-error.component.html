@@ -1,0 +1,23 @@
+
+  <div
+    *ngIf="
+      formName.controls[fieldName]?.invalid &&
+      (formName.controls[fieldName]?.dirty ||
+        formName.controls[fieldName]?.touched)
+    "
+    class="alert position-absolute"
+  >
+    <span *ngIf="formName.controls[fieldName]?.errors['required']">
+      {{ fieldLabel }}{{ " is Required" }}
+    </span>
+    <span *ngIf="formName.controls[fieldName]?.errors['email']">
+      {{ 'Please enter a valid Email'}}
+    </span>
+    <span *ngIf="formName.controls[fieldName]?.errors['phoneNumber']">
+      {{ 'Please enter a valid Phone Number'}}
+    </span>
+    <span *ngIf="formName.controls[fieldName]?.errors['password']">
+      {{ "Password Must Contain 1 Uppercase , 1 Lowercase , 1 Digit , 1 Special Character"}}
+    </span>
+
+  </div>

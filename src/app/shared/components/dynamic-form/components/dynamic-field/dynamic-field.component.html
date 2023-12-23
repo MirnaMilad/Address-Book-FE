@@ -1,0 +1,20 @@
+<app-dynamic-label [field]="field" [formName]="formName"></app-dynamic-label>
+<ng-container [ngSwitch]="field?.type">
+  <app-dynamic-select
+    *ngSwitchCase="'select'"
+    [field]="field"
+    [formName]="formName"
+  ></app-dynamic-select>
+  <div *ngIf="!isReviewing">
+    <app-dynamic-attachment
+      *ngSwitchCase="'file'"
+      [field]="field"
+      [formName]="formName"
+    ></app-dynamic-attachment>
+  </div>
+  <app-dynamic-input
+    *ngSwitchDefault
+    [field]="field"
+    [formName]="formName"
+  ></app-dynamic-input>
+</ng-container>

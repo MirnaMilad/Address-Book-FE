@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-12">
+        <div class="card shadow m-5 px-5 pt-3 pb-5">
+          <div class="py-3">
+            <a [routerLink]="'/login'"><i class="bi bi-arrow-left"></i></a>
+            <h4 class="fw-bold text-center">Create Account</h4>
+          </div>
+          <app-dynamic-form
+          [model]="registerForm"
+          [buttonName]="'Sign up'"
+          (formValuesEmitter)="register($event)"
+          ></app-dynamic-form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

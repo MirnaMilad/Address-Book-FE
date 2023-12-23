@@ -1,0 +1,29 @@
+<form [formGroup]="formName">
+  <p *ngIf="numberOfFiles !== 0"></p>
+  <label
+    class="input-group-text placeHolder d-flex justify-content-between mb-0"
+    tabindex="0"
+    [for]="field.fieldName"
+  >
+    <i class="bi bi-paperclip col-auto"></i>
+    <div class="col-4">
+      <span *ngIf="numberOfFiles !== 0">{{ numberOfFiles }}</span>
+    </div>
+  </label>
+  <input
+    [ngClass]="
+      formName.controls[field.fieldName].invalid &&
+      (formName.controls[field.fieldName].dirty ||
+        formName.controls[field.fieldName].touched)
+        ? 'error'
+        : ''
+    "
+    type="file"
+    class="invisible"
+    
+    [placeholder]="field.label"
+    [id]="field.fieldName"
+    (change)="onFileChange($event.target['files'] , field.fieldName)"
+    multiple
+  />
+</form>

@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-12">
+      <div class="card shadow m-5 p-5">
+        <div class="py-3">
+          <h1 class="hello fw-bold text-center">Hello</h1>
+          <h6 class="text-center">Login to your account</h6>
+        </div>
+        <app-dynamic-form
+          [model]="loginForm"
+          [buttonName]="'Login'"
+          (formValuesEmitter)="login($event)"
+        ></app-dynamic-form>
+        <div class="text-center pt-5">
+          <p>Don`t have an account ? <a [routerLink]="'/register'" class="create fw-bold">Create</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

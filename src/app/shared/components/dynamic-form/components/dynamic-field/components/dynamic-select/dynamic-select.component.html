@@ -1,0 +1,18 @@
+<form [formGroup]="formName">
+  <select
+    [ngClass]="
+      (formName.controls[field.fieldName].invalid &&
+      (formName.controls[field.fieldName].dirty ||
+        formName.controls[field.fieldName].touched)
+        ? 'error'
+        : '')
+    "
+    class="form-select"
+    [formControlName]="field.fieldName"
+  >
+    <option class="placeHolder" value="" disabled selected>{{ field.label }}</option>
+    <option *ngFor="let option of field.options" [value]="option.id">
+      {{ option.name }}
+    </option>
+  </select>
+</form>

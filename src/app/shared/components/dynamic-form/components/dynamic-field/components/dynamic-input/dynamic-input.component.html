@@ -1,0 +1,16 @@
+<form [formGroup]="formName">
+  <input
+    [ngClass]="
+      formName.controls[field.fieldName].invalid &&
+      (formName.controls[field.fieldName].dirty ||
+        formName.controls[field.fieldName].touched)
+        ? 'error'
+        : ''
+    "
+    [id]="field.fieldName"
+    class="form-control shadow rounded-pill"
+    [type]="field.type"
+    [formControlName]="field.fieldName"
+    [placeholder]="field.label"
+  />
+</form>

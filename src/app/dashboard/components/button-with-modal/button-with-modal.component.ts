@@ -1,8 +1,17 @@
+import { GenericApiService } from './../../services/generic-api.service';
 import { DepartmentApisService } from './../../services/department-apis.service';
 import { JobApisService } from './../../services/job-apis.service';
-import { EntryApisService } from './../../services/entryApis.service';
 import { DashboardService } from './../../services/dashboard.service';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-button-with-modal',
@@ -19,51 +28,64 @@ export class ButtonWithModalComponent implements OnInit {
   @Input() buttonClass: string;
   @Input() modalTitle: string;
   @Input() submitButtonName: string;
-  @Input() entry;
+  @Input() item;
   @Input() status: string;
   @Input() id: string | number;
 
-  @Output() responseEntry = new EventEmitter<any>();
+  @Output() responseItem = new EventEmitter<any>();
 
   constructor(
-    private entryApisService: EntryApisService,
+    private genericApiService: GenericApiService,
     private dashboardService: DashboardService,
     private jobApisService: JobApisService,
-    private departmentApisService: DepartmentApisService,
-    private el: ElementRef,
-    private renderer: Renderer2
-  ) {}
-
-  ngOnInit(): void {
+    private departmentApisService: DepartmentApisService
+  ) {
     this.getAllJobs();
   }
-  AddNewEntry() {
-    let newEntry = this.form['dynamicFormGroup'].value;
-    this.entryApisService
-      .createNewEntry(newEntry)
-      .subscribe((res) => {
-        this.responseEntry.emit({
-          entry:newEntry,
-          status:'add',
-          jobs:this.jobs,
-          departments:this.departments
-        })
-        this.closeModal();
-      });
+
+  ngOnInit(): void {
   }
-  updateEntry(id) {
-    let entryToUpdate = this.form['dynamicFormGroup'].value;
-    this.entryApisService
-      .editEntry(id, entryToUpdate)
-      .subscribe((res) => {
-        this.responseEntry.emit({
-          entry:{id , ...entryToUpdate},
-          status:'edit',
-          jobs:this.jobs,
-          departments:this.departments
-        })
-        this.closeModal();
+  AddNewItem() {
+    let newItem = this.form['dynamicFormGroup'].value;
+    console.log(newItem)
+    this.genericApiService.createNewItem(newItem).subscribe((res) => {
+      this.responseItem.emit({
+        item: newItem,
+        status: 'add',
+        jobs: this.jobs,
+        departments: this.departments,
       });
+      this.form['dynamicFormGroup'].reset();
+      this.closeModal();
+    });
+  }
+  // AddNewEntry() {
+  //   let newEntry = this.form['dynamicFormGroup'].value;
+  //   this.entryApisService
+  //     .createNewEntry(newEntry)
+  //     .subscribe((res) => {
+  //       this.responseEntry.emit({
+  //         entry:newEntry,
+  //         status:'add',
+  //         jobs:this.jobs,
+  //         departments:this.departments
+  //       })
+  //       this.form['dynamicFormGroup'].reset();
+  //       this.closeModal();
+  //     });
+  // }
+  updateItem(id) {
+    let itemToUpdate = this.form['dynamicFormGroup'].value;
+    console.log(this.form)
+    this.genericApiService.editItem(id, itemToUpdate).subscribe((res) => {
+      this.responseItem.emit({
+        item: { id, ...itemToUpdate },
+        status: 'edit',
+        jobs: this.jobs,
+        departments: this.departments,
+      });
+      this.closeModal();
+    });
   }
 
   getAllJobs() {
@@ -77,27 +99,28 @@ export class ButtonWithModalComponent implements OnInit {
     this.departmentApisService.getAllDepartments().subscribe((res) => {
       this.departments = res;
       this.formModel = this.dashboardService.displayEntryFormModel(
-        this.entry,
+        this.item,
         this.jobs,
         this.departments
       );
     });
   }
 
-  closeModal(){
+  closeModal() {
     this.closeButton.nativeElement.click();
   }
 
   onSubmit(id) {
+    console.log(this.status)
     if (this.form['dynamicFormGroup'].valid) {
-      switch (this.modalTitle) {
-        case 'Add New Entry':
-          this.AddNewEntry();
+      
+      switch (this.status) {
+        case 'add':
+          this.AddNewItem();
           break;
-        case 'Edit Entry':
-          this.updateEntry(this.entry.id);
+        case 'edit':
+          this.updateItem(this.item.id);
           break;
-
       }
     } else {
       // Form is invalid, handle invalid form (e.g., display error messages)

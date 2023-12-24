@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+import { GenericApiService } from './generic-api.service';
 import { DepartmentApisService } from './department-apis.service';
 import { JobApisService } from './job-apis.service';
 import { Injectable } from '@angular/core';
@@ -6,10 +8,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class DashboardService {
-  constructor() {}
+  entityName:string;
+  statusSubscription$:Subscription;
+  constructor(private genericApiService : GenericApiService) {
+    this.statusSubscription$=this.genericApiService.status.subscribe(
+      res=>this.entityName = res
+    )
+  }
 
   displayEntryFormModel(entry, jobs, departments) {
-    let newEntry = {
+    let newEntry;
+    if(this.entityName == "Entries"){
+    newEntry = {
       fullName: {
         label: 'Full Name',
         value: entry ? entry.fullName : '',
@@ -21,7 +31,7 @@ export class DashboardService {
       },
       jobId: {
         label: 'Job',
-        value: entry ? entry.job.id : '',
+        value: entry ? entry?.job.id : '',
         col: 'col-12 py-2',
         type: 'select',
         options: jobs,
@@ -31,7 +41,7 @@ export class DashboardService {
       },
       departmentId: {
         label: 'Department',
-        value: entry ? entry.department.id : '',
+        value: entry ? entry?.department.id : '',
         col: 'col-12 py-2',
         type: 'select',
         options: departments,
@@ -92,6 +102,31 @@ export class DashboardService {
         rules: { required: true },
       },
     };
+  }else{
+    newEntry = {
+      title: {
+        label: 'Title',
+        value: entry ? entry.fullName : '',
+        col: 'col-12 py-2',
+        type: 'text',
+        rules: {
+          required: true,
+        },
+      },
+      description: {
+        label: 'Description',
+        value: entry ? entry.fullName : '',
+        col: 'col-12 py-2',
+        type: 'text',
+        rules: {
+          required: true,
+        },
+      },
+    }
+  }
     return newEntry;
+  }
+  ngOnDestroy() {
+    this.statusSubscription$.unsubscribe();
   }
 }

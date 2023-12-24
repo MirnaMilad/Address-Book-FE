@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
 })
 export class EntryApisService {
   baseUrl: string;
-  entries;
 
   constructor(private httpClient: HttpClient) {
     this.baseUrl = environment.baseUrl;

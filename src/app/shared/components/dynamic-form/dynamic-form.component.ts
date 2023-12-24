@@ -1,12 +1,5 @@
-
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
-import { FormGroup} from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { FormService } from '../../services/form.service';
 
 @Component({
@@ -14,7 +7,7 @@ import { FormService } from '../../services/form.service';
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.css'],
 })
-export class DynamicFormComponent implements OnInit{
+export class DynamicFormComponent implements OnInit {
   dynamicFormGroup: FormGroup;
   fields;
   form;
@@ -22,9 +15,7 @@ export class DynamicFormComponent implements OnInit{
   @Input() model: any;
   @Input() class: string;
   @Output() formValuesEmitter = new EventEmitter<any>(); // Event Emitter to send Data
-  
-  @Input() isReviewing:boolean;
-  @Input() isInlineInput:boolean;
+  @Input() withSubmitButton: boolean = true;
 
   constructor(private formService: FormService) {}
 
@@ -40,15 +31,8 @@ export class DynamicFormComponent implements OnInit{
 
   onSubmitForm() {
     if (this.dynamicFormGroup.valid) {
-      
-    this.formValuesEmitter.emit(this.dynamicFormGroup.value);
-      // Form is valid, proceed with form submission logic
-      console.log('Form submitted!');
+      this.formValuesEmitter.emit(this.dynamicFormGroup.value);
     } else {
-      // Form is invalid, handle invalid form (e.g., display error messages)
-      console.log(this.dynamicFormGroup)
-      console.log('Form is invalid. Please check the fields.');
-      // You can also mark all fields as touched to display validation errors
       this.dynamicFormGroup.markAllAsTouched();
     }
   }

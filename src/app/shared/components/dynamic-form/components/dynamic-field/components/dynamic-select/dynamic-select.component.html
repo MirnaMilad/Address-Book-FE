@@ -7,12 +7,12 @@
         ? 'error'
         : '')
     "
-    class="form-select"
+    class="form-select shadow rounded-pill"
     [formControlName]="field.fieldName"
   >
-    <option class="placeHolder" value="" disabled selected>{{ field.label }}</option>
-    <option *ngFor="let option of field.options" [value]="option.id">
-      {{ option.name }}
+  <option class="placeHolder" value="" disabled selected>{{ field.label }}</option>
+    <option *ngFor="let option of field?.options" [value]="option.id">
+      {{ option.title }}
     </option>
   </select>
 </form>

@@ -72,7 +72,7 @@ export class FormService {
 export function phoneNumberValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     // Regular expression for a valid phone number
-    const phoneNumberPattern = /^\d{10}$/;
+    const phoneNumberPattern = /^\d{11}$/;
 
     // Check if the control's value matches the pattern
     if (control.value && !phoneNumberPattern.test(control.value)) {

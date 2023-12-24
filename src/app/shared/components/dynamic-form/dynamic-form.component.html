@@ -6,15 +6,12 @@
         [ngClass]="field.col"
         class="position-relative"
       >
-        <div *ngIf="field.type !== 'input-group'">
+        <div>
           <app-dynamic-field
             [field]="field"
             [formName]="dynamicFormGroup"
-            [isReviewing]="isReviewing"
-            [isInlineInput]="isInlineInput"
           ></app-dynamic-field>
           <app-dynamic-error
-            *ngIf="field.type !== 'input-group'"
             [fieldName]="field['fieldName']"
             [fieldLabel]="field['label']"
           ></app-dynamic-error>
@@ -22,7 +19,7 @@
       </div>
     </div>
   </div>
-  <div class="text-end">
+  <div class="text-end" *ngIf="withSubmitButton">
   <button class="btn btn-primary mt-5 rounded-pill px-4" type="submit">{{buttonName}}</button>
 </div>
 </form>

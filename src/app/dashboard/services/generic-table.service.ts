@@ -10,27 +10,30 @@ export class GenericTableService {
   tableStatus;
   tableData;
   tableHeader;
-  constructor(private genericService: GenericApiService) {
-    this.statusSubscription$ = this.genericService.status.subscribe((res) => {
-      this.tableStatus = res;
-      if (this.tableStatus === 'Entries') {
-        this.tableHeader = [
-          'Full Name',
-          'Job',
-          'Department',
-          'Mobile Number',
-          'Date of birth',
-          'Address',
-          'Email',
-          'Age',
-          'Edit',
-          'Delete',
-        ];
-      } else {
-        this.tableHeader = ['Title', 'Description', 'Edit', 'Delete'];
-      }
-    });
+  constructor() {}
+
+  genericTableHeader(status){
+    if (status === 'Entries') {
+      this.tableHeader = [
+        'Full Name',
+        'Job',
+        'Department',
+        'Mobile Number',
+        'Date of birth',
+        'Address',
+        'Email',
+        'Age',
+        'Edit',
+        'Delete',
+      ];
+      return this.tableHeader
+    } else {
+      this.tableHeader = ['Title', 'Description', 'Edit', 'Delete'];
+      return this.tableHeader
+    }
   }
+
+
   ngOnDestroy() {
     this.statusSubscription$.unsubscribe();
   }

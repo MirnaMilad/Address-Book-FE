@@ -14,8 +14,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private registerService: RegisterService,
     private router: Router,
-    private toastr: ToastrService,
-    private authService : AuthService
+    private toastr: ToastrService
   ) {
     this.registerForm = this.registerService.registerForm;
   }
@@ -27,12 +26,11 @@ export class RegisterComponent implements OnInit {
       (res) => {
         console.log(res);
         localStorage.setItem('token', res['token']);
-        this.router.navigate['/dashboard'];
-        this.authService.setAuthenticated(true);
+        this.router.navigate(['/dashboard']);
       },
       (error) => {
         this.toastr.error(error.error.message);
-        if (error.error.message === 'This email is Already exists') {
+        if (error.error.message === 'This email is Already exist') {
           this.router.navigate(['/login']);
         }
       }

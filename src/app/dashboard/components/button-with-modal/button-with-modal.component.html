@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn rounded-pill" [ngClass]="buttonClass" data-bs-toggle="modal" [attr.data-bs-target]="'#'+id">
+<button type="button" (click)="getAllJobs()" class="btn rounded-pill" [ngClass]="buttonClass" data-bs-toggle="modal" [attr.data-bs-target]="'#'+id">
     {{buttonName}}
   </button>
   

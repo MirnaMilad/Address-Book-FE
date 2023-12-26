@@ -5,20 +5,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  public loggedInSubject = new BehaviorSubject<boolean>(false);
-  private isAuthenticatedValue = false;
-
-  get isLoggedIn(): Observable<boolean> {
-    return this.loggedInSubject.asObservable();
-  }
-
-   // Assume you have a method to set the authentication status
-   setAuthenticated(status: boolean): void {
-    this.isAuthenticatedValue = status;
-  }
-
-  // Assume you have a method to get the authentication status
+  // Check if the user is authenticated (e.g., if a token is present)
   isAuthenticated(): boolean {
-    return this.isAuthenticatedValue;
+    // Replace this with your actual authentication logic
+    const token = localStorage.getItem('token');
+    return !!token; // Returns true if token is present, false otherwise
   }
 }

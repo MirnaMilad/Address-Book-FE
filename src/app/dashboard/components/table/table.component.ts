@@ -28,7 +28,15 @@ export class TableComponent {
     private dashboardService : DashboardService
   ) {
     this.items = [];
-    this.getAllItems();
+    this.statusSubscription$ = this.genericApiService.status.subscribe(
+      (res) => {
+        console.log("from table constructor")
+        this.getAllItems();
+        console.log(this.tableStatus)
+        this.tableStatus = res;
+        this.tableHeader = this.genericTableService.genericTableHeader(this.tableStatus);
+      }
+    );
   }
 
   ngOnInit() {
@@ -36,12 +44,7 @@ export class TableComponent {
   }
 
   ngAfterViewInit() {
-    this.statusSubscription$ = this.genericApiService.status.subscribe(
-      (res) => {
-        this.tableStatus = res;
-        this.tableHeader = this.genericTableService.tableHeader;
-      }
-    );
+    
   }
 
   getAllJobs() {
@@ -103,16 +106,13 @@ export class TableComponent {
 
   manageJobs() {
     this.genericApiService.status.next('Jobs');
-    this.getAllItems();
   }
 
   manageDepartments() {
     this.genericApiService.status.next('Departments');
-    this.getAllItems();
   }
   manageEntries() {
     this.genericApiService.status.next('Entries');
-    this.getAllItems();
   }
 
   getAllItems() {

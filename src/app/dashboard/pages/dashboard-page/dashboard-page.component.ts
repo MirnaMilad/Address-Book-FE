@@ -13,7 +13,6 @@ import * as XLSX from 'xlsx';
 export class DashboardPageComponent {
 
   constructor(
-    private authService: AuthService,
     private router: Router,
   ) {
   }
@@ -21,9 +20,7 @@ export class DashboardPageComponent {
 
   logout() {
     localStorage.removeItem('token');
-    this.authService.setAuthenticated(false);
     this.router.navigate(['/login']);
-    this.authService.loggedInSubject.next(false);
   }
 
   downloadExcelSheet() {

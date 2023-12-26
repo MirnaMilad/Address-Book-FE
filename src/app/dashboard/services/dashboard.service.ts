@@ -8,18 +8,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class DashboardService {
-  entityName:string;
+  itemName:string;
   statusSubscription$:Subscription;
   constructor(private genericApiService : GenericApiService) {
     this.statusSubscription$=this.genericApiService.status.subscribe(
-      res=>this.entityName = res
+      res=>this.itemName = res
     )
   }
 
   displayEntryFormModel(entry, jobs, departments) {
-    let newEntry;
-    if(this.entityName == "Entries"){
-    newEntry = {
+    let newItem;
+    if(this.itemName == "Entries"){
+      newItem = {
       fullName: {
         label: 'Full Name',
         value: entry ? entry.fullName : '',
@@ -103,7 +103,7 @@ export class DashboardService {
       },
     };
   }else{
-    newEntry = {
+    newItem = {
       title: {
         label: 'Title',
         value: entry ? entry.fullName : '',
@@ -124,7 +124,7 @@ export class DashboardService {
       },
     }
   }
-    return newEntry;
+    return newItem;
   }
   ngOnDestroy() {
     this.statusSubscription$.unsubscribe();

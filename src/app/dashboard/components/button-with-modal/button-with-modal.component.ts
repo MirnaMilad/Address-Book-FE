@@ -9,7 +9,6 @@ import {
   Input,
   OnInit,
   Output,
-  Renderer2,
   ViewChild,
 } from '@angular/core';
 
@@ -39,15 +38,12 @@ export class ButtonWithModalComponent implements OnInit {
     private dashboardService: DashboardService,
     private jobApisService: JobApisService,
     private departmentApisService: DepartmentApisService
-  ) {
-    this.getAllJobs();
-  }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   AddNewItem() {
     let newItem = this.form['dynamicFormGroup'].value;
-    console.log(newItem)
+    console.log(newItem);
     this.genericApiService.createNewItem(newItem).subscribe((res) => {
       this.responseItem.emit({
         item: newItem,
@@ -59,24 +55,9 @@ export class ButtonWithModalComponent implements OnInit {
       this.closeModal();
     });
   }
-  // AddNewEntry() {
-  //   let newEntry = this.form['dynamicFormGroup'].value;
-  //   this.entryApisService
-  //     .createNewEntry(newEntry)
-  //     .subscribe((res) => {
-  //       this.responseEntry.emit({
-  //         entry:newEntry,
-  //         status:'add',
-  //         jobs:this.jobs,
-  //         departments:this.departments
-  //       })
-  //       this.form['dynamicFormGroup'].reset();
-  //       this.closeModal();
-  //     });
-  // }
   updateItem(id) {
     let itemToUpdate = this.form['dynamicFormGroup'].value;
-    console.log(this.form)
+    console.log(this.form);
     this.genericApiService.editItem(id, itemToUpdate).subscribe((res) => {
       this.responseItem.emit({
         item: { id, ...itemToUpdate },
@@ -111,9 +92,8 @@ export class ButtonWithModalComponent implements OnInit {
   }
 
   onSubmit(id) {
-    console.log(this.status)
+    console.log(this.status);
     if (this.form['dynamicFormGroup'].valid) {
-      
       switch (this.status) {
         case 'add':
           this.AddNewItem();

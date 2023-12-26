@@ -20,6 +20,7 @@
     </div>
   </div>
   <div class="text-end" *ngIf="withSubmitButton">
-  <button class="btn btn-primary mt-5 rounded-pill px-4" type="submit">{{buttonName}}</button>
+  <button class="btn btn-primary mt-5 rounded-pill px-4" type="submit"
+  (keyup.enter)="onSubmitForm()">{{buttonName}}</button>
 </div>
 </form>

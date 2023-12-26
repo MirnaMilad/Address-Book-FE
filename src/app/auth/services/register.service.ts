@@ -48,7 +48,7 @@ export class RegisterService {
         type: 'password',
         rules: {
           required: true,
-          password: true,
+          password: true
         },
       },
     };

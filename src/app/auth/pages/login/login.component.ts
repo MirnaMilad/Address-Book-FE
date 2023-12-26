@@ -26,8 +26,8 @@ export class LoginComponent {
       (res: LoginResponse) => {
         localStorage.setItem('token', res['token']);
         this.router.navigate(['/dashboard']);
-        this.authService.setAuthenticated(true);
-        this.authService.loggedInSubject.next(true);
+        // this.authService.setAuthenticated(true);
+        // this.authService.loggedInSubject.next(true);
       },
       (error) => this.toastr.error('Invalid Email or Password')
     );

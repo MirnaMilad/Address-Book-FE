@@ -1,11 +1,7 @@
 import { GenericTableService } from './../../services/generic-table.service';
 import { GenericApiService } from '../../services/generic-api.service';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { JobApisService } from '../../services/job-apis.service';
-import { DepartmentApisService } from '../../services/department-apis.service';
-import { DashboardService } from '../../services/dashboard.service';
-import { ChildActivationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -13,7 +9,7 @@ import { ChildActivationEnd } from '@angular/router';
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent {
-  items;
+  @Input() items;
   tableStatus: string;
   statusSubscription$: Subscription;
   tableHeader;
@@ -23,16 +19,14 @@ export class TableComponent {
 
   constructor(
     private genericApiService: GenericApiService,
-    private genericTableService: GenericTableService,
-    private jobApisService: JobApisService,
-    private departmentApisService: DepartmentApisService
+    private genericTableService: GenericTableService
   ) {
     this.items = [];
     this.getAllJobs();
     this.statusSubscription$ = this.genericApiService.status.subscribe(
       (res) => {
-        this.getAllItems();
         this.tableStatus = res;
+        this.getAllItems();
         this.tableHeader = this.genericTableService.genericTableHeader(
           this.tableStatus
         );
@@ -43,14 +37,14 @@ export class TableComponent {
   ngOnInit() {}
 
   getAllJobs() {
-    this.jobApisService.getAllJobs().subscribe((res) => {
+    this.genericApiService.getAllItems('Jobs').subscribe((res) => {
       this.jobs = res;
       this.getAllDepartments();
     });
   }
 
   getAllDepartments() {
-    this.departmentApisService.getAllDepartments().subscribe((res) => {
+    this.genericApiService.getAllItems('departments').subscribe((res) => {
       this.departments = res;
     });
   }
@@ -83,7 +77,7 @@ export class TableComponent {
   }
 
   onDeleting(id) {
-    this.genericApiService.deleteItem(id).subscribe((res) => {
+    this.genericApiService.deleteItem(this.tableStatus, id).subscribe((res) => {
       this.onUpdateUi({
         id: id,
         status: 'delete',
@@ -91,20 +85,17 @@ export class TableComponent {
     });
   }
 
-  manageJobs() {
-    this.genericApiService.status.next('Jobs');
-  }
-
-  manageDepartments() {
-    this.genericApiService.status.next('Departments');
-  }
-  manageEntries() {
-    this.genericApiService.status.next('Entries');
+  manageItem(item) {
+    this.genericApiService.status.next(item);
   }
 
   getAllItems() {
-    this.genericApiService.getAllItems().subscribe((res) => (this.items = res));
+    this.genericApiService
+      .getAllItems(this.tableStatus)
+      .subscribe((res) => (this.items = res));
   }
+
+  
 
   ngOnDestroy() {
     this.statusSubscription$.unsubscribe();

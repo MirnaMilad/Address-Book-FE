@@ -6,6 +6,7 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 import { SharedModule } from '../shared/shared.module';
 import { ButtonWithModalComponent } from './components/button-with-modal/button-with-modal.component';
 import { TableComponent } from './components/table/table.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { TableComponent } from './components/table/table.component';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   providers:[
   ]

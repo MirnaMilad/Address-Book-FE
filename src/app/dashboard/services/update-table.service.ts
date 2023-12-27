@@ -1,13 +1,12 @@
-import { Subscription } from 'rxjs';
-import { GenericApiService } from './generic-api.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DashboardService {
+export class UpdateTableService {
+  constructor() {}
+
   displayEntryFormModel(entry, jobs, departments, status) {
-    console.log(status);
     let newItem;
     if (status == 'Entries') {
       newItem = {
@@ -114,9 +113,7 @@ export class DashboardService {
           },
         },
       };
-      console.log(newItem);
     }
     return newItem;
   }
-  
 }

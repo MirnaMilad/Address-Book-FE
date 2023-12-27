@@ -1,9 +1,8 @@
-import { EntryApisService } from './../../services/entryApis.service';
-import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '../../services/dashboard.service';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
+import { GenericApiService } from '../../services/generic-api.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -11,12 +10,31 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./dashboard-page.component.css'],
 })
 export class DashboardPageComponent {
-
+  items;
+  statusSubscription$: Subscription;
+  tableStatus;
+  searchCriteria:string;
   constructor(
     private router: Router,
+    private genericApiService: GenericApiService
   ) {
+    this.statusSubscription$ = this.genericApiService.status.subscribe(
+      (res) => {
+        this.tableStatus = res;
+        this.searchCriteria = null;
+      }
+    );
   }
-  search() {}
+
+  search() {
+    console.log(this.searchCriteria)
+    this.genericApiService
+      .search(this.tableStatus, this.searchCriteria)
+      .subscribe((res) => {
+        this.items = res;
+        this.searchCriteria = null;
+      });
+  }
 
   logout() {
     localStorage.removeItem('token');

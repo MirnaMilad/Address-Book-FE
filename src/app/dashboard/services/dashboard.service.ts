@@ -17,6 +17,7 @@ export class DashboardService {
   }
 
   displayEntryFormModel(entry, jobs, departments) {
+    console.log(entry)
     let newItem;
     if(this.itemName == "Entries"){
       newItem = {
@@ -106,7 +107,7 @@ export class DashboardService {
     newItem = {
       title: {
         label: 'Title',
-        value: entry ? entry.fullName : '',
+        value: entry.title ? entry.title : '',
         col: 'col-12 py-2',
         type: 'text',
         rules: {
@@ -115,7 +116,7 @@ export class DashboardService {
       },
       description: {
         label: 'Description',
-        value: entry ? entry.fullName : '',
+        value: entry.description ? entry.description : '',
         col: 'col-12 py-2',
         type: 'text',
         rules: {
@@ -123,6 +124,7 @@ export class DashboardService {
         },
       },
     }
+    console.log(newItem)
   }
     return newItem;
   }

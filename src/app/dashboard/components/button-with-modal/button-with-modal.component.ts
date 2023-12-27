@@ -11,6 +11,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-button-with-modal',
@@ -31,25 +32,37 @@ export class ButtonWithModalComponent implements OnInit {
   @Input() status: string;
   @Input() id: string | number;
 
+  statusSubscription$: Subscription;
+
   @Output() responseItem = new EventEmitter<any>();
 
   constructor(
     private genericApiService: GenericApiService,
     private dashboardService: DashboardService
-  ) {}
+  ) {
+    // this.statusSubscription$ = this.genericApiService.status.subscribe(
+    //   (res) => {
+    //     if (this.status !== 'delete') {
+    //       console.log(this.item)
+          
+    //     }
+    //   }
+    // );
+  }
 
   ngOnInit(): void {
-    if (this.status !== 'delete') {
-      this.formModel = this.dashboardService.displayEntryFormModel(
-        this.item,
-        this.jobs,
-        this.departments
-      );
-    }
+    // if (this.status !== 'delete') {
+    //   this.formModel = this.dashboardService.displayEntryFormModel(
+    //     this.item,
+    //     this.jobs,
+    //     this.departments
+    //   );
+    // }
   }
 
   ngAfterViewInit() {}
   AddNewItem() {
+    
     let newItem = this.form['dynamicFormGroup'].value;
     this.genericApiService.createNewItem(newItem).subscribe((res) => {
       this.responseItem.emit({
@@ -61,6 +74,7 @@ export class ButtonWithModalComponent implements OnInit {
     });
   }
   updateItem(id) {
+    
     let itemToUpdate = this.form['dynamicFormGroup'].value;
     this.genericApiService.editItem(id, itemToUpdate).subscribe((res) => {
       this.responseItem.emit({
@@ -72,14 +86,21 @@ export class ButtonWithModalComponent implements OnInit {
   }
 
   deleteItem() {
-    this.genericApiService.deleteItem(this.item.id).subscribe(
-      res=>{
-        this.responseItem.emit({
-          item: this.item,
-          status: 'delete',
-        });
-        this.closeModal();
-      })
+    this.genericApiService.deleteItem(this.item.id).subscribe((res) => {
+      this.responseItem.emit({
+        item: this.item,
+        status: 'delete',
+      });
+      this.closeModal();
+    });
+  }
+
+  getFormModel(){
+    this.formModel = this.dashboardService.displayEntryFormModel(
+      this.item,
+      this.jobs,
+      this.departments
+    );
   }
 
   closeModal() {

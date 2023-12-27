@@ -1,37 +1,54 @@
 <div class="row justify-content-between">
   <div class="col-md-6 col-12 my-4">
     <div class="row justify-content-evenly">
-      <button class="col-auto btn btn-outline-dark rounded-pill fw-bold" (click)="manageEntries()">Entries</button>
-      <button class=" col-auto btn btn-outline-dark rounded-pill fw-bold" (click)="manageJobs()">Jobs</button>
-      <button class="col-auto btn btn-outline-dark rounded-pill fw-bold" (click)="manageDepartments()">Departments</button>
+      <button
+        class="col-auto btn btn-outline-dark rounded-pill fw-bold"
+        (click)="manageEntries()"
+      >
+        Entries
+      </button>
+      <button
+        class="col-auto btn btn-outline-dark rounded-pill fw-bold"
+        (click)="manageJobs()"
+      >
+        Jobs
+      </button>
+      <button
+        class="col-auto btn btn-outline-dark rounded-pill fw-bold"
+        (click)="manageDepartments()"
+      >
+        Departments
+      </button>
     </div>
   </div>
-<div class="col-md-3 col-12 text-center my-4">
-  <app-button-with-modal
-            (responseItem)="onUpdateUi($event)"
-            [id]="'add'"
-            [status]="'add'"
-            [buttonName]="'Add New Entry'"
-            [buttonClass]="'btn-primary'"
-            [modalTitle]="'Add New Entry'"
-            [submitButtonName]="'submit'"
-          ></app-button-with-modal>
-</div>
-
+  <div class="col-md-3 col-12 text-center my-4">
+    <app-button-with-modal
+      *ngIf="jobs !== undefined && departments !== undefined"
+      (responseItem)="onUpdateUi($event)"
+      [id]="'add'"
+      [status]="'add'"
+      [buttonName]="'Add New Entry'"
+      [buttonClass]="'btn-primary'"
+      [modalTitle]="'Add New Entry'"
+      [submitButtonName]="'submit'"
+      [jobs]="jobs"
+      [departments]="departments"
+    ></app-button-with-modal>
+  </div>
 </div>
 
 <div class="table-responsive mb-5 mt-2">
-    <table id="excel" class="table table-striped table-hover table-bordered">
-      <!-- Table Header -->
-      <thead class="table-dark">
-        <tr>
-          <th *ngFor="let item of tableHeader" scope="col">{{item}}</th>
-        </tr>
-      </thead>
-      <tbody *ngIf="items">
+  <table id="excel" class="table table-striped table-hover table-bordered">
+    <!-- Table Header -->
+    <thead class="table-dark">
+      <tr>
+        <th *ngFor="let item of tableHeader" scope="col">{{ item }}</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="items">
       <!-- Entries -->
       <tr *ngFor="let item of items">
-        <ng-container *ngIf="tableStatus==='Entries'">
+        <ng-container *ngIf="tableStatus === 'Entries'">
           <th scope="row">{{ item.fullName }}</th>
           <td>{{ item.job.title }}</td>
           <td>{{ item.department.title }}</td>
@@ -41,27 +58,46 @@
           <td>{{ item.email }}</td>
           <td>{{ item.age }}</td>
         </ng-container>
-        <ng-container *ngIf="tableStatus==='Departments' || tableStatus==='Jobs'">
+        <ng-container
+          *ngIf="tableStatus === 'Departments' || tableStatus === 'Jobs'"
+        >
           <th>{{ item.title }}</th>
           <td>{{ item.description }}</td>
-          </ng-container>
-          <td>
-            <app-button-with-modal
+        </ng-container>
+        <td>
+          <app-button-with-modal
+            *ngIf="jobs !== undefined && departments !== undefined"
             (responseItem)="onUpdateUi($event)"
-              [id]="'edit' + item.id"
-              [status]="'edit'"
-              [buttonName]="'Edit'"
-              [buttonClass]="'btn-success'"
-              [modalTitle]="'Edit '+ tableStatus"
-              [submitButtonName]="'Edit'"
-              [item]="item"
-            ></app-button-with-modal>
-          </td>
-          <td>
-            <button class="btn btn-danger rounded-pill" (click)="onDeleting(item.id)">Delete</button>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
+            [id]="'edit' + item.id"
+            [status]="'edit'"
+            [buttonName]="'Edit'"
+            [buttonClass]="'btn-success'"
+            [modalTitle]="'Edit ' + tableStatus"
+            [submitButtonName]="'Edit'"
+            [item]="item"
+            [jobs]="jobs"
+            [departments]="departments"
+          ></app-button-with-modal>
+        </td>
+        <td>
+          <!-- <button
+            class="btn btn-danger rounded-pill"
+            (click)="onDeleting(item.id)"
+          >
+            Delete
+          </button> -->
+          <app-button-with-modal
+            (responseItem)="onUpdateUi($event)"
+            [id]="'delete' + item.id"
+            [status]="'delete'"
+            [buttonName]="'Delete'"
+            [buttonClass]="'btn-danger'"
+            [modalTitle]="'Delete ' + tableStatus"
+            [submitButtonName]="'Delete'"
+            [item]="item"
+          ></app-button-with-modal>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

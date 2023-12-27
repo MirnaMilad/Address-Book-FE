@@ -31,7 +31,7 @@ export class DashboardService {
       },
       jobId: {
         label: 'Job',
-        value: entry ? entry?.job.id : '',
+        value: entry?.job?.id ? entry.job.id : '',
         col: 'col-12 py-2',
         type: 'select',
         options: jobs,
@@ -41,7 +41,7 @@ export class DashboardService {
       },
       departmentId: {
         label: 'Department',
-        value: entry ? entry?.department.id : '',
+        value: entry?.department?.id ? entry.department.id : '',
         col: 'col-12 py-2',
         type: 'select',
         options: departments,

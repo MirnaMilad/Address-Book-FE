@@ -24,7 +24,6 @@ export class RegisterComponent implements OnInit {
   register(reqBody) {
     this.registerService.register(reqBody).subscribe(
       (res) => {
-        console.log(res);
         localStorage.setItem('token', res['token']);
         this.router.navigate(['/dashboard']);
       },

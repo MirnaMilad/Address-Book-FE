@@ -19,9 +19,9 @@ import {
 })
 export class ButtonWithModalComponent implements OnInit {
   @ViewChild('closeButton') closeButton: any;
-  formModel;
-  jobs;
-  departments;
+  @Input() formModel;
+  @Input() jobs;
+  @Input() departments;
   @ViewChild('form') form!: ElementRef;
   @Input() buttonName: string;
   @Input() buttonClass: string;
@@ -35,21 +35,26 @@ export class ButtonWithModalComponent implements OnInit {
 
   constructor(
     private genericApiService: GenericApiService,
-    private dashboardService: DashboardService,
-    private jobApisService: JobApisService,
-    private departmentApisService: DepartmentApisService
+    private dashboardService: DashboardService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.status !== 'delete') {
+      this.formModel = this.dashboardService.displayEntryFormModel(
+        this.item,
+        this.jobs,
+        this.departments
+      );
+    }
+  }
+
+  ngAfterViewInit() {}
   AddNewItem() {
     let newItem = this.form['dynamicFormGroup'].value;
-    console.log(newItem);
     this.genericApiService.createNewItem(newItem).subscribe((res) => {
       this.responseItem.emit({
         item: newItem,
         status: 'add',
-        jobs: this.jobs,
-        departments: this.departments,
       });
       this.form['dynamicFormGroup'].reset();
       this.closeModal();
@@ -57,34 +62,24 @@ export class ButtonWithModalComponent implements OnInit {
   }
   updateItem(id) {
     let itemToUpdate = this.form['dynamicFormGroup'].value;
-    console.log(this.form);
     this.genericApiService.editItem(id, itemToUpdate).subscribe((res) => {
       this.responseItem.emit({
         item: { id, ...itemToUpdate },
         status: 'edit',
-        jobs: this.jobs,
-        departments: this.departments,
       });
       this.closeModal();
     });
   }
 
-  getAllJobs() {
-    this.jobApisService.getAllJobs().subscribe((res) => {
-      this.jobs = res;
-      this.getAllDepartments();
-    });
-  }
-
-  getAllDepartments() {
-    this.departmentApisService.getAllDepartments().subscribe((res) => {
-      this.departments = res;
-      this.formModel = this.dashboardService.displayEntryFormModel(
-        this.item,
-        this.jobs,
-        this.departments
-      );
-    });
+  deleteItem() {
+    this.genericApiService.deleteItem(this.item.id).subscribe(
+      res=>{
+        this.responseItem.emit({
+          item: this.item,
+          status: 'delete',
+        });
+        this.closeModal();
+      })
   }
 
   closeModal() {
@@ -92,19 +87,22 @@ export class ButtonWithModalComponent implements OnInit {
   }
 
   onSubmit(id) {
-    console.log(this.status);
-    if (this.form['dynamicFormGroup'].valid) {
-      switch (this.status) {
-        case 'add':
-          this.AddNewItem();
-          break;
-        case 'edit':
-          this.updateItem(this.item.id);
-          break;
+    if (this.status !== 'delete') {
+      if (this.form['dynamicFormGroup'].valid) {
+        switch (this.status) {
+          case 'add':
+            this.AddNewItem();
+            break;
+          case 'edit':
+            this.updateItem(this.item.id);
+            break;
+        }
+      } else {
+        // Form is invalid, handle invalid form (e.g., display error messages)
+        this.form['dynamicFormGroup'].markAllAsTouched();
       }
     } else {
-      // Form is invalid, handle invalid form (e.g., display error messages)
-      this.form['dynamicFormGroup'].markAllAsTouched();
+      this.deleteItem();
     }
   }
 }

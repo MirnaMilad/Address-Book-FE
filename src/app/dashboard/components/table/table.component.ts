@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { JobApisService } from '../../services/job-apis.service';
 import { DepartmentApisService } from '../../services/department-apis.service';
 import { DashboardService } from '../../services/dashboard.service';
+import { ChildActivationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -18,34 +19,29 @@ export class TableComponent {
   tableHeader;
   jobs;
   departments;
-  formModel
+  item;
 
   constructor(
     private genericApiService: GenericApiService,
     private genericTableService: GenericTableService,
     private jobApisService: JobApisService,
     private departmentApisService: DepartmentApisService,
-    private dashboardService : DashboardService
+    private dashboardService: DashboardService
   ) {
     this.items = [];
+    this.getAllJobs();
     this.statusSubscription$ = this.genericApiService.status.subscribe(
       (res) => {
-        console.log("from table constructor")
         this.getAllItems();
-        console.log(this.tableStatus)
         this.tableStatus = res;
-        this.tableHeader = this.genericTableService.genericTableHeader(this.tableStatus);
+        this.tableHeader = this.genericTableService.genericTableHeader(
+          this.tableStatus
+        );
       }
     );
   }
 
-  ngOnInit() {
-    this.getAllJobs();
-  }
-
-  ngAfterViewInit() {
-    
-  }
+  ngOnInit() {}
 
   getAllJobs() {
     this.jobApisService.getAllJobs().subscribe((res) => {
@@ -57,24 +53,18 @@ export class TableComponent {
   getAllDepartments() {
     this.departmentApisService.getAllDepartments().subscribe((res) => {
       this.departments = res;
-      this.formModel = this.dashboardService.displayEntryFormModel(
-        this.items,
-        this.jobs,
-        this.departments
-      );
     });
   }
 
   onIncludingjobAndDepartment(event) {
-    let job = event.jobs.filter((x) => x.id == event.item.jobId)[0];
+    let job = this.jobs.filter((x) => x.id == event.item.jobId)[0];
     event.item.job = job;
-    let department = event.departments.filter(
+    let department = this.departments.filter(
       (x) => x.id == event.item.departmentId
     )[0];
     event.item.department = department;
   }
   onUpdateUi(event) {
-    console.log(event);
     if (event.status === 'add') {
       this.onIncludingjobAndDepartment(event);
       this.items.push(event.item);
@@ -89,9 +79,7 @@ export class TableComponent {
         })
         .slice();
     } else if (event.status === 'delete') {
-      console.log(this.items, event.id);
-      this.items = this.items.filter((item) => item.id !== event.id);
-      console.log(this.items);
+      this.items = this.items.filter((item) => item.id !== event.item.id);
     }
   }
 

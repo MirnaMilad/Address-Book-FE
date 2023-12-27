@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button type="button" (click)="getAllJobs()" class="btn rounded-pill" [ngClass]="buttonClass" data-bs-toggle="modal" [attr.data-bs-target]="'#'+id">
+<button type="button" class="btn rounded-pill" [ngClass]="buttonClass" data-bs-toggle="modal" [attr.data-bs-target]="'#'+id">
     {{buttonName}}
   </button>
   
@@ -14,8 +14,11 @@
         <div *ngIf="formModel" class="modal-body">
           <app-dynamic-form [model]="formModel" [withSubmitButton]="false" #form></app-dynamic-form>
         </div>
+        <div *ngIf="status=='delete'" class="modal-body">
+          <h5>Do you want to delete {{item.fullName || item.Title}}</h5>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn rounded-pill" [ngClass]="buttonClass" (click)="onSubmit(id)">{{submitButtonName}}</button>
         </div>
       </div>

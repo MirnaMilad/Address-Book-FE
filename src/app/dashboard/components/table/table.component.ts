@@ -25,8 +25,7 @@ export class TableComponent {
     private genericApiService: GenericApiService,
     private genericTableService: GenericTableService,
     private jobApisService: JobApisService,
-    private departmentApisService: DepartmentApisService,
-    private dashboardService: DashboardService
+    private departmentApisService: DepartmentApisService
   ) {
     this.items = [];
     this.getAllJobs();

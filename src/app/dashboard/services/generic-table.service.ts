@@ -13,6 +13,7 @@ export class GenericTableService {
   constructor() {}
 
   genericTableHeader(status){
+    console.log(status)
     if (status === 'Entries') {
       this.tableHeader = [
         'Full Name',

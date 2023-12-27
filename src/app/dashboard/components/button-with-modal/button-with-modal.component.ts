@@ -33,6 +33,7 @@ export class ButtonWithModalComponent implements OnInit {
   @Input() id: string | number;
 
   statusSubscription$: Subscription;
+  tableStatus:string;
 
   @Output() responseItem = new EventEmitter<any>();
 
@@ -40,29 +41,19 @@ export class ButtonWithModalComponent implements OnInit {
     private genericApiService: GenericApiService,
     private dashboardService: DashboardService
   ) {
-    // this.statusSubscription$ = this.genericApiService.status.subscribe(
-    //   (res) => {
-    //     if (this.status !== 'delete') {
-    //       console.log(this.item)
-          
-    //     }
-    //   }
-    // );
+    this.statusSubscription$=this.genericApiService.status.subscribe(
+      res=>{
+        this.tableStatus = res
+        this.formModel = null
+      }
+    )
   }
 
   ngOnInit(): void {
-    // if (this.status !== 'delete') {
-    //   this.formModel = this.dashboardService.displayEntryFormModel(
-    //     this.item,
-    //     this.jobs,
-    //     this.departments
-    //   );
-    // }
   }
 
   ngAfterViewInit() {}
   AddNewItem() {
-    
     let newItem = this.form['dynamicFormGroup'].value;
     this.genericApiService.createNewItem(newItem).subscribe((res) => {
       this.responseItem.emit({
@@ -99,7 +90,8 @@ export class ButtonWithModalComponent implements OnInit {
     this.formModel = this.dashboardService.displayEntryFormModel(
       this.item,
       this.jobs,
-      this.departments
+      this.departments,
+      this.tableStatus
     );
   }
 
@@ -125,5 +117,9 @@ export class ButtonWithModalComponent implements OnInit {
     } else {
       this.deleteItem();
     }
+  }
+
+  ngOnDestroy() {
+    this.statusSubscription$.unsubscribe();
   }
 }

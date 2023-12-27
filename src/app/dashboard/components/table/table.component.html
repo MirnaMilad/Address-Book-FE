@@ -50,8 +50,8 @@
       <tr *ngFor="let item of items">
         <ng-container *ngIf="tableStatus === 'Entries'">
           <th scope="row">{{ item.fullName }}</th>
-          <td>{{ item.job.title }}</td>
-          <td>{{ item.department.title }}</td>
+          <td>{{ item.job?.title }}</td>
+          <td>{{ item.department?.title }}</td>
           <td>{{ item.mobileNumber }}</td>
           <td>{{ item.dateOfBirth }}</td>
           <td>{{ item.address }}</td>

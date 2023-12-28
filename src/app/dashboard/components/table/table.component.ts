@@ -53,6 +53,13 @@ export class TableComponent {
         this.departments = res;
       });
   }
+
+  //Get All
+  getAllItems() {
+    this.genericApiService
+      .getAllItems(this.tableStatus)
+      .subscribe((res) => (this.items = res));
+  }
   // Getting specific Job and Department using its Id
   onIncludingjobAndDepartment(event) {
     let job = this.jobs.filter((x) => x.id == event.item.jobId)[0];
@@ -84,12 +91,6 @@ export class TableComponent {
   //To display selected table
   manageItem(item) {
     this.genericApiService.status.next(item);
-  }
-  //Get All
-  getAllItems() {
-    this.genericApiService
-      .getAllItems(this.tableStatus)
-      .subscribe((res) => (this.items = res));
   }
 
   ngOnDestroy() {

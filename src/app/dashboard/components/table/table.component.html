@@ -63,7 +63,7 @@
         <td class="text-center">
           <!-- Update -->
           <app-button-with-modal
-            *ngIf="jobs !== undefined && departments !== undefined"
+            *ngIf="jobs !== undefined && departments !== undefined "
             (responseItem)="onUpdateUi($event)"
             [id]="'edit' + item.id"
             [status]="'edit'"

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UpdateTableService } from '../../services/update-table.service';
-import { Department, Entry, Job } from '../../models/table.model';
+import { Department, Job } from '../../models/table.model';
 
 @Component({
   selector: 'app-button-with-modal',
@@ -60,7 +60,7 @@ export class ButtonWithModalComponent implements OnInit {
       .createNewItem(this.tableStatus, newItem)
       .subscribe((res) => {
         this.responseItem.emit({
-          item: newItem,
+          item: res,
           status: 'add',
         });
         this.form['dynamicFormGroup'].reset();
@@ -106,7 +106,7 @@ export class ButtonWithModalComponent implements OnInit {
     this.closeButton.nativeElement.click();
   }
   //Submit
-  onSubmit(id) {
+  onSubmit() {
     if (this.status !== 'delete') {
       if (this.form['dynamicFormGroup'].valid) {
         switch (this.status) {

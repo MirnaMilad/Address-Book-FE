@@ -27,7 +27,6 @@ export class DashboardPageComponent {
   }
 
   search() {
-    console.log(this.searchCriteria);
     this.genericApiService
       .search(this.tableStatus, this.searchCriteria)
       .subscribe((res) => {

@@ -10,3 +10,15 @@
 body{
     background-color: var(--white-200);
 }
+p{
+    margin-bottom: 0px;
+}
+td , th{
+    font-size:14px
+}
+
+@media only screen and (max-width: 1000px) {
+    td , th{
+        font-size:10px
+    }
+  }

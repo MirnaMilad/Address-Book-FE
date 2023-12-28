@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Department, Job } from '../models/table.model';
 
 @Injectable({
   providedIn: 'root',
@@ -6,13 +7,18 @@ import { Injectable } from '@angular/core';
 export class UpdateTableService {
   constructor() {}
 
-  displayEntryFormModel(entry, jobs, departments, status) {
+  displayEntryFormModel(
+    item: any,
+    jobs: Job[],
+    departments: Department[],
+    status: string
+  ) {
     let newItem;
     if (status == 'Entries') {
       newItem = {
         fullName: {
           label: 'Full Name',
-          value: entry ? entry.fullName : '',
+          value: item ? item.fullName : '',
           col: 'col-12 py-2',
           type: 'text',
           rules: {
@@ -21,7 +27,7 @@ export class UpdateTableService {
         },
         jobId: {
           label: 'Job',
-          value: entry?.job?.id ? entry.job.id : '',
+          value: item?.job?.id ? item.job.id : '',
           col: 'col-12 py-2',
           type: 'select',
           options: jobs,
@@ -31,7 +37,7 @@ export class UpdateTableService {
         },
         departmentId: {
           label: 'Department',
-          value: entry?.department?.id ? entry.department.id : '',
+          value: item?.department?.id ? item.department.id : '',
           col: 'col-12 py-2',
           type: 'select',
           options: departments,
@@ -41,7 +47,7 @@ export class UpdateTableService {
         },
         mobileNumber: {
           label: 'Mobile Number',
-          value: entry ? entry.mobileNumber : '',
+          value: item ? item.mobileNumber : '',
           col: 'col-12 py-2',
           type: 'number',
           rules: {
@@ -51,7 +57,7 @@ export class UpdateTableService {
         },
         dateOfBirth: {
           label: 'Date of birth',
-          value: entry ? entry.dateOfBirth : '',
+          value: item ? item.dateOfBirth : '',
           col: 'col-12 py-2',
           type: 'date',
           rules: {
@@ -60,7 +66,7 @@ export class UpdateTableService {
         },
         address: {
           label: 'Address',
-          value: entry ? entry.address : '',
+          value: item ? item.address : '',
           col: 'col-12 py-2',
           type: 'text',
           rules: {
@@ -69,7 +75,7 @@ export class UpdateTableService {
         },
         email: {
           label: 'Email',
-          value: entry ? entry.email : '',
+          value: item ? item.email : '',
           col: 'col-12 py-2',
           type: 'text',
           rules: { required: true, email: true },
@@ -86,7 +92,7 @@ export class UpdateTableService {
         // },
         age: {
           label: 'Age',
-          value: entry ? entry.age : '',
+          value: item ? item.age : '',
           col: 'col-12 py-2',
           type: 'number',
           rules: { required: true },
@@ -96,7 +102,7 @@ export class UpdateTableService {
       newItem = {
         title: {
           label: 'Title',
-          value: entry?.title ? entry?.title : '',
+          value: item?.title ? item?.title : '',
           col: 'col-12 py-2',
           type: 'text',
           rules: {
@@ -105,7 +111,7 @@ export class UpdateTableService {
         },
         description: {
           label: 'Description',
-          value: entry?.description ? entry?.description : '',
+          value: item?.description ? item?.description : '',
           col: 'col-12 py-2',
           type: 'text',
           rules: {

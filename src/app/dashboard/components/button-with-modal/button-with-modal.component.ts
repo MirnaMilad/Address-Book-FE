@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UpdateTableService } from '../../services/update-table.service';
+import { Department, Entry, Job } from '../../models/table.model';
 
 @Component({
   selector: 'app-button-with-modal',
@@ -19,21 +20,22 @@ import { UpdateTableService } from '../../services/update-table.service';
 export class ButtonWithModalComponent implements OnInit {
   @ViewChild('closeButton') closeButton: any;
   @ViewChild('form') form!: ElementRef;
-  @Input() formModel;
-  @Input() jobs;
-  @Input() departments;
+  @Input() formModel: any;
+  @Input() jobs: Job[];
+  @Input() departments: Department[];
   @Input() buttonName: string;
   @Input() buttonClass: string;
   @Input() modalTitle: string;
   @Input() submitButtonName: string;
-  @Input() item;
+  @Input() item: any;
   @Input() status: string;
   @Input() id: string | number;
+  @Input() icon: string;
 
   statusSubscription$: Subscription;
   tableStatus: string;
 
-  @Output() responseItem = new EventEmitter<any>();
+  @Output() responseItem = new EventEmitter<{ item: any; status: string }>();
 
   constructor(
     private genericApiService: GenericApiService,
@@ -51,38 +53,46 @@ export class ButtonWithModalComponent implements OnInit {
 
   ngAfterViewInit() {}
 
+  //Create
   AddNewItem() {
     let newItem = this.form['dynamicFormGroup'].value;
-    this.genericApiService.createNewItem(this.tableStatus , newItem).subscribe((res) => {
-      this.responseItem.emit({
-        item: newItem,
-        status: 'add',
+    this.genericApiService
+      .createNewItem(this.tableStatus, newItem)
+      .subscribe((res) => {
+        this.responseItem.emit({
+          item: newItem,
+          status: 'add',
+        });
+        this.form['dynamicFormGroup'].reset();
+        this.closeModal();
       });
-      this.form['dynamicFormGroup'].reset();
-      this.closeModal();
-    });
   }
+  //Update
   updateItem(id) {
     let itemToUpdate = this.form['dynamicFormGroup'].value;
-    this.genericApiService.editItem(this.tableStatus , id, itemToUpdate).subscribe((res) => {
-      this.responseItem.emit({
-        item: { id, ...itemToUpdate },
-        status: 'edit',
+    this.genericApiService
+      .editItem(this.tableStatus, id, itemToUpdate)
+      .subscribe((res) => {
+        this.responseItem.emit({
+          item: { id, ...itemToUpdate },
+          status: 'edit',
+        });
+        this.closeModal();
       });
-      this.closeModal();
-    });
   }
-
+  //Delete
   deleteItem() {
-    this.genericApiService.deleteItem(this.tableStatus , this.item.id).subscribe((res) => {
-      this.responseItem.emit({
-        item: this.item,
-        status: 'delete',
+    this.genericApiService
+      .deleteItem(this.tableStatus, this.item.id)
+      .subscribe((res) => {
+        this.responseItem.emit({
+          item: this.item,
+          status: 'delete',
+        });
+        this.closeModal();
       });
-      this.closeModal();
-    });
   }
-
+  //Form Creation
   getFormModel() {
     this.formModel = this.updateTableService.displayEntryFormModel(
       this.item,
@@ -91,11 +101,11 @@ export class ButtonWithModalComponent implements OnInit {
       this.tableStatus
     );
   }
-
+  //CloseModal
   closeModal() {
     this.closeButton.nativeElement.click();
   }
-
+  //Submit
   onSubmit(id) {
     if (this.status !== 'delete') {
       if (this.form['dynamicFormGroup'].valid) {

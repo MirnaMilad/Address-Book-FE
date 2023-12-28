@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class GenericApiService {
   baseUrl: string;
-  status = new BehaviorSubject('Entries');
+  status = new BehaviorSubject<string>('Entries');
   statusSubscription$: Subscription;
 
   entityName: string;
@@ -20,17 +20,17 @@ export class GenericApiService {
     );
   }
 
-  getAllItems(tableStatus) {
+  getAllItems(tableStatus:string) {
     const url = this.baseUrl + tableStatus;
     return this.httpClient.get(url);
   }
 
-  getItemById(tableStatus, id) {
+  getItemById(tableStatus:string, id:number) {
     const url = this.baseUrl + tableStatus + '/' + id;
     return this.httpClient.get(url);
   }
 
-  createNewItem(tableStatus, newItem) {
+  createNewItem(tableStatus:string, newItem:any) {
     if (this.entityName == 'Entry') {
       newItem = {
         ...newItem,
@@ -41,7 +41,7 @@ export class GenericApiService {
     return this.httpClient.post(url, newItem);
   }
 
-  editItem(tableStatus, id, updatedItem) {
+  editItem(tableStatus:string, id:number, updatedItem:any) {
     let item = {
       ...updatedItem,
       id: id,
@@ -51,12 +51,12 @@ export class GenericApiService {
     return this.httpClient.put(url, item);
   }
 
-  deleteItem(tableStatus, id) {
+  deleteItem(tableStatus:string, id) {
     const url = this.baseUrl + tableStatus + '/' + id;
     return this.httpClient.delete(url, id);
   }
 
-  search(tableStatus, searchCriteria) {
+  search(tableStatus:string, searchCriteria:string) {
     const url = this.baseUrl + tableStatus + '/search/' + searchCriteria;
     return this.httpClient.get(url);
   }

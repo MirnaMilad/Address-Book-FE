@@ -1,6 +1,7 @@
 <!-- Button trigger modal -->
 <button (click)="getFormModel()" type="button" class="btn rounded-pill" [ngClass]="buttonClass" data-bs-toggle="modal" [attr.data-bs-target]="'#'+id">
-    {{buttonName}}
+  <span *ngIf="buttonName"><p>{{buttonName}}</p></span>
+  <span *ngIf="icon"><i class="bi " [ngClass]="icon"></i></span>
   </button>
   
   <!-- Modal -->
@@ -11,11 +12,13 @@
           <h1 class="modal-title fs-5" [id]="status">{{modalTitle}}</h1>
           <button type="button" #closeButton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div *ngIf="formModel" class="modal-body">
+        <!-- Dynamic Form -->
+        <div *ngIf="formModel && status !== 'delete'" class="modal-body">
           <app-dynamic-form [model]="formModel" [withSubmitButton]="false" #form></app-dynamic-form>
         </div>
+        <!-- Delete Dialog -->
         <div *ngIf="status=='delete'" class="modal-body">
-          <h5>Do you want to delete {{item.fullName || item.Title}}</h5>
+          <h5>Do you want to delete {{item.fullName || item.title}}</h5>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Cancel</button>

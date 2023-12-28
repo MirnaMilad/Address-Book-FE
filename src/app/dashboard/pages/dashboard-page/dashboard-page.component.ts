@@ -10,10 +10,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard-page.component.css'],
 })
 export class DashboardPageComponent {
-  items;
+  items: any;
   statusSubscription$: Subscription;
-  tableStatus;
-  searchCriteria:string;
+  tableStatus: string;
+  searchCriteria: string;
   constructor(
     private router: Router,
     private genericApiService: GenericApiService
@@ -27,7 +27,7 @@ export class DashboardPageComponent {
   }
 
   search() {
-    console.log(this.searchCriteria)
+    console.log(this.searchCriteria);
     this.genericApiService
       .search(this.tableStatus, this.searchCriteria)
       .subscribe((res) => {

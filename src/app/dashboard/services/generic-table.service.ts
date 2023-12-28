@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GenericApiService } from './generic-api.service';
+import { Button } from '../models/table.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GenericTableService {
   statusSubscription$: Subscription;
-  tableStatus;
-  tableData;
-  tableHeader;
-  constructor() {}
+  tableHeader: string[];
+  buttons: Button[];
+  constructor() {
+    this.buttons = [
+      {
+        buttonName: 'Entries',
+      },
+      {
+        buttonName: 'Departments',
+      },
+      {
+        buttonName: 'Jobs',
+      },
+    ];
+  }
 
-  genericTableHeader(status){
-    console.log(status)
+  genericTableHeader(status) {
     if (status === 'Entries') {
       this.tableHeader = [
         'Full Name',
@@ -27,13 +37,12 @@ export class GenericTableService {
         'Edit',
         'Delete',
       ];
-      return this.tableHeader
+      return this.tableHeader;
     } else {
       this.tableHeader = ['Title', 'Description', 'Edit', 'Delete'];
-      return this.tableHeader
+      return this.tableHeader;
     }
   }
-
 
   ngOnDestroy() {
     this.statusSubscription$.unsubscribe();

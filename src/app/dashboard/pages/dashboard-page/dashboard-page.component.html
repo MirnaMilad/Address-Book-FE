@@ -1,33 +1,46 @@
 <div class="container">
-  <div class="card my-5">
+  <div class="card shadow my-5">
     <div class="card-body">
       <div class="row justify-content-between">
-        <div class="col-md-5 col-12 my-4">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            [(ngModel)]="searchCriteria"
-          />
-          <button class="btn btn-outline-primary" (click)="search()">
-            Search
-          </button>
-        </div>
-        <div class="col-md-4 -col-12 my-4">
-          <div class="row">
+        <div class="col-md-auto col-12 my-4">
+          <!-- Search -->
+          <div class="row justify-content-center">
             <div class="col-8">
-              <button class="btn btn-success" (click)="downloadExcelSheet()">
-                Export to Excel Sheet
-              </button>
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                [(ngModel)]="searchCriteria"
+              />
             </div>
             <div class="col-4">
+              <button class="btn btn-outline-primary" (click)="search()">
+                <p>Search</p>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Export To excel sheet -->
+        <div class="col-md-auto -col-12 my-4">
+          <div class="row justify-content-center">
+            <div class="col-auto">
+              <button
+                class="btn btn-outline-success"
+                (click)="downloadExcelSheet()"
+              >
+                <p>Export to Excel Sheet</p>
+              </button>
+            </div>
+            <!-- Logout -->
+            <div class="col-auto">
               <button class="btn btn-outline-danger" (click)="logout()">
-                Logout
+                <p>Logout</p>
               </button>
             </div>
           </div>
         </div>
       </div>
+      <!-- Table -->
       <app-table [items]="items"></app-table>
     </div>
   </div>

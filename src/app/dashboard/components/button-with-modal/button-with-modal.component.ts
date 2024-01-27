@@ -11,6 +11,7 @@ import {
 import { Subscription } from 'rxjs';
 import { UpdateTableService } from '../../services/update-table.service';
 import { Department, Job } from '../../models/table.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-button-with-modal',
@@ -39,7 +40,8 @@ export class ButtonWithModalComponent implements OnInit {
 
   constructor(
     private genericApiService: GenericApiService,
-    private updateTableService: UpdateTableService
+    private updateTableService: UpdateTableService,
+    private toastr: ToastrService,
   ) {
     this.statusSubscription$ = this.genericApiService.status.subscribe(
       (res) => {
@@ -92,6 +94,7 @@ export class ButtonWithModalComponent implements OnInit {
         this.closeModal();
       });
   }
+  
   //Form Creation
   getFormModel() {
     this.formModel = this.updateTableService.displayEntryFormModel(
